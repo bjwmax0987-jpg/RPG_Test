@@ -1,0 +1,101 @@
+```html
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>캐릭터 이동</title>
+
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+        }
+
+        #game {
+            width: 100vw;
+            height: 100vh;
+            background-color: #eeeeee;
+            position: relative;
+        }
+
+        #player {
+            width: 50px;
+            height: 50px;
+            background-color: dodgerblue;
+            position: absolute;
+
+            left: 50%;
+            top: 50%;
+
+            transform: translate(-50%, -50%);
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="game">
+        <div id="player"></div>
+    </div>
+
+    <script>
+        const player = document.getElementById("player");
+
+        let x = window.innerWidth / 2;
+        let y = window.innerHeight / 2;
+
+        const speed = 5;
+
+        const keys = {};
+
+        // 키를 누르면 저장
+        document.addEventListener("keydown", (event) => {
+            keys[event.key.toLowerCase()] = true;
+        });
+
+        // 키를 떼면 삭제
+        document.addEventListener("keyup", (event) => {
+            keys[event.key.toLowerCase()] = false;
+        });
+
+        function update() {
+
+            // 위
+            if (keys["w"] || keys["arrowup"]) {
+                y -= speed;
+            }
+
+            // 아래
+            if (keys["s"] || keys["arrowdown"]) {
+                y += speed;
+            }
+
+            // 왼쪽
+            if (keys["a"] || keys["arrowleft"]) {
+                x -= speed;
+            }
+
+            // 오른쪽
+            if (keys["d"] || keys["arrowright"]) {
+                x += speed;
+            }
+
+            // 화면 밖으로 나가지 않게 제한
+            const maxX = window.innerWidth - player.offsetWidth;
+            const maxY = window.innerHeight - player.offsetHeight;
+
+            x = Math.max(0, Math.min(x, maxX));
+            y = Math.max(0, Math.min(y, maxY));
+
+            player.style.left = x + "px";
+            player.style.top = y + "px";
+
+            requestAnimationFrame(update);
+        }
+
+        update();
+    </script>
+
+</body>
+</html>
+```
